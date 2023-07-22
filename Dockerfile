@@ -21,7 +21,7 @@ FROM scratch
 
 COPY --from=builder /app/http .
 
-EXPOSE 8090
+EXPOSE 5003
 
 CMD [ "./main" ]
 
