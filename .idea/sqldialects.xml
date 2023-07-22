@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/db/migrations/20230715115943_add_users.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/db/migrations/20230715135051_add_categories.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/infra/sqlc/query.sql" dialect="PostgreSQL" />
+  </component>
+</project>
