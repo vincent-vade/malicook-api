@@ -22,6 +22,6 @@ FROM scratch
 COPY --from=builder /app/http .
 
 EXPOSE 5003
-
+#de
 CMD [ "./main" ]
 
