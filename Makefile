@@ -20,3 +20,13 @@ migration-migrate:
 
 test:
 	docker exec -it cws-back-cws-back-1 yarn test
+
+
+build:
+	docker compose up --build -d --remove-orphans
+up:
+	docker compose up -d
+down:
+	docker compose down
+show_logs:
+	docker compose logs
