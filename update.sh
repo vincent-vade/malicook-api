@@ -1,4 +1,5 @@
 #!/bin/bash
-cd /home/deploy/malicook-api/
+cd /home/deploy/malicook-api
+pwd
 git pull
 docker compose down && docker-compose pull && docker-compose up -d
