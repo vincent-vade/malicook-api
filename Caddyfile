@@ -1,5 +1,5 @@
 api.malicook.co {
-    reverse_proxy / http://193.168.145.120:5003 {
+    reverse_proxy http://193.168.145.120:5003 {
         header_up X-Header "Api Malicook"
     }
     tls vincentvad@gmail.com
