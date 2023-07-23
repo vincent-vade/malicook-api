@@ -17,4 +17,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            pwd
+            bash /home/deploy/malicook-api/update.sh
+            
