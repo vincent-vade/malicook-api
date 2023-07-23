@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    expose:
+    ports:
       - "5003:5003"
     env_file:
       - .env
