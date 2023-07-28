@@ -15,6 +15,11 @@ import (
 	"recipes-api/http/routes"
 )
 
+// @version 1.0.0
+// @title Pet Service
+// @description Handles pet information
+// @host localhost
+// @schemes http
 func main() {
 	ctx := context.Background()
 	r := render.New()
@@ -27,5 +32,6 @@ func main() {
 
 	addr := ":5003"
 	log.Println("listen on", addr)
+
 	http.ListenAndServe(addr, router)
 }

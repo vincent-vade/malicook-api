@@ -1,11 +1,11 @@
 -- migrate:up
-CREATE TABLE IF NOT EXISTS "category" (
+CREATE TABLE IF NOT EXISTS "categories" (
     "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
     "name" varchar(40) NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone
+    "created_at" timestamp with time zone DEFAULT now() NOT NULL,
+    "updated_at" timestamp with time zone
 );
-CREATE UNIQUE INDEX IF NOT EXISTS "name_idx" ON "category" ("name");
+CREATE UNIQUE INDEX IF NOT EXISTS "name_idx" ON "categories" ("name");
 
 -- migrate:down
-DROP TABLE category;
+DROP TABLE categories;

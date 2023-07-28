@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"encoding/json"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"net/http"
 	"recipes-api/domain/core"
 	"recipes-api/domain/users"
+	"recipes-api/infra/sqlc"
 )
 
 type UserHandler struct {
@@ -20,11 +22,17 @@ func NewUserHandler(us users.IUserService) *UserHandler {
 
 func (uh *UserHandler) CreateUserHandler(ctx *core.ContextHandler) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		err := uh.userService.NewUser(ctx)
+		var u sqlc.User
+		err := json.NewDecoder(request.Body).Decode(&u)
 		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+		}
+
+		er := uh.userService.NewUser(ctx, u)
+		if er != nil {
 			return
 		}
-		ctx.Render.JSON(writer, 200, "de")
+		ctx.Render.JSON(writer, 200, map[string]interface{}{"msg": "ok"})
 	}
 }
 

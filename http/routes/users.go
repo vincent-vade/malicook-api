@@ -12,6 +12,7 @@ func UsersRoute(r *chi.Mux, cH *core.ContextHandler) {
 	ur := repository.NewUserRepository(cH.SqlcCtx)
 	us := users.NewUserService(ur)
 	uh := handlers.NewUserHandler(us)
+
 	r.Route("/users", func(router chi.Router) {
 		router.Post("/", uh.CreateUserHandler(cH))
 		router.Get("/", uh.ListUsersHandler(cH))

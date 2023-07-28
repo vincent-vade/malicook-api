@@ -5,10 +5,12 @@ CREATE TABLE IF NOT EXISTS "users" (
     "last_name" varchar(60) NOT NULL,
     "email" varchar(60) NOT NULL,
     "password" varchar NOT NULL,
+    "verify_token" varchar DEFAULT null,
     "is_active" boolean DEFAULT false,
     "created_at" timestamp with time zone DEFAULT now() NOT NULL,
     "updated_at" timestamp with time zone
 );
+
 CREATE INDEX IF NOT EXISTS "name_idx" ON "users" ("first_name");
 CREATE UNIQUE INDEX IF NOT EXISTS "email_idx" ON "users" ("email");
 

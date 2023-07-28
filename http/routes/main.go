@@ -8,4 +8,5 @@ import (
 func MakeRoutes(r *chi.Mux, cH *core.ContextHandler) {
 	UsersRoute(r, cH)
 	CategoriesRoute(r, cH)
+	RecipesRoute(r, cH)
 }

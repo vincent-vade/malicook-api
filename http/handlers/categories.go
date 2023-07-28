@@ -12,7 +12,6 @@ func CreateCategoryHandler(ctx *core.ContextHandler) func(writer http.ResponseWr
 		insertedUser := categories.NewCategory(ctx)
 		ctx.Render.JSON(writer, 200, insertedUser)
 	}
-
 }
 
 type UsersWithCount struct {

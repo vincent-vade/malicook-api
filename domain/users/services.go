@@ -12,7 +12,7 @@ type UserService struct {
 }
 
 type IUserService interface {
-	NewUser(ch *core.ContextHandler) error
+	NewUser(ch *core.ContextHandler, u sqlc.User) error
 	FindUser(ch *core.ContextHandler, id uuid.UUID) sqlc.User
 	ListUsers(ch *core.ContextHandler) ([]sqlc.User, error)
 }
@@ -37,15 +37,15 @@ func chanPass(pass string) string {
 	return receivePass
 }
 
-func (us UserService) NewUser(ctx *core.ContextHandler) error {
-	pass := chanPass("@Yabaoner1d991")
-	u := sqlc.User{
-		Email:     "dazedr",
-		LastName:  "de",
-		FirstName: "de",
+func (us UserService) NewUser(ctx *core.ContextHandler, u sqlc.User) error {
+	pass := chanPass(u.Password)
+	usr := sqlc.User{
+		Email:     u.Email,
+		LastName:  u.LastName,
+		FirstName: u.FirstName,
 		Password:  pass,
 	}
-	err := us.userRepository.Create(ctx.Ctx, &u)
+	err := us.userRepository.Create(ctx.Ctx, &usr)
 	if err != nil {
 		return err
 	}

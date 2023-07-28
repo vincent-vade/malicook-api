@@ -1,0 +1,10 @@
+host: localhost
+info:
+  contact: {}
+  description: Handles pet information
+  title: Pet Service
+  version: 1.0.0
+paths: {}
+schemes:
+- http
+swagger: "2.0"

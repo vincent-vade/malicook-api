@@ -6,10 +6,98 @@ package sqlc
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 )
+
+type Difficulty string
+
+const (
+	DifficultyEasy   Difficulty = "Easy"
+	DifficultyMedium Difficulty = "Medium"
+	DifficultyHard   Difficulty = "Hard"
+)
+
+func (e *Difficulty) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = Difficulty(s)
+	case string:
+		*e = Difficulty(s)
+	default:
+		return fmt.Errorf("unsupported scan type for Difficulty: %T", src)
+	}
+	return nil
+}
+
+type NullDifficulty struct {
+	Difficulty Difficulty `json:"difficulty"`
+	Valid      bool       `json:"valid"` // Valid is true if Difficulty is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullDifficulty) Scan(value interface{}) error {
+	if value == nil {
+		ns.Difficulty, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.Difficulty.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullDifficulty) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.Difficulty), nil
+}
+
+type Pricing string
+
+const (
+	PricingCheap           Pricing = "Cheap"
+	PricingNotTooExpensive Pricing = "Not Too Expensive"
+	PricingExpensive       Pricing = "Expensive"
+)
+
+func (e *Pricing) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = Pricing(s)
+	case string:
+		*e = Pricing(s)
+	default:
+		return fmt.Errorf("unsupported scan type for Pricing: %T", src)
+	}
+	return nil
+}
+
+type NullPricing struct {
+	Pricing Pricing `json:"pricing"`
+	Valid   bool    `json:"valid"` // Valid is true if Pricing is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullPricing) Scan(value interface{}) error {
+	if value == nil {
+		ns.Pricing, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.Pricing.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullPricing) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.Pricing), nil
+}
 
 type Category struct {
 	ID        uuid.UUID    `json:"id"`
@@ -18,13 +106,28 @@ type Category struct {
 	UpdatedAt sql.NullTime `json:"updatedAt"`
 }
 
+type Recipe struct {
+	ID                  uuid.UUID      `json:"id"`
+	Title               string         `json:"title"`
+	Description         sql.NullString `json:"description"`
+	Difficulty          Difficulty     `json:"difficulty"`
+	CookingTime         time.Time      `json:"cookingTime"`
+	PreparationDuration time.Time      `json:"preparationDuration"`
+	Pricing             Pricing        `json:"pricing"`
+	NumberPerson        int16          `json:"numberPerson"`
+	UserID              uuid.UUID      `json:"userId"`
+	CreatedAt           time.Time      `json:"createdAt"`
+	UpdatedAt           sql.NullTime   `json:"updatedAt"`
+}
+
 type User struct {
-	ID        uuid.UUID    `json:"id"`
-	FirstName string       `json:"firstName"`
-	LastName  string       `json:"lastName"`
-	Email     string       `json:"email"`
-	Password  string       `json:"password"`
-	IsActive  sql.NullBool `json:"isActive"`
-	CreatedAt time.Time    `json:"createdAt"`
-	UpdatedAt sql.NullTime `json:"updatedAt"`
+	ID          uuid.UUID      `json:"id"`
+	FirstName   string         `json:"firstName"`
+	LastName    string         `json:"lastName"`
+	Email       string         `json:"email"`
+	Password    string         `json:"password"`
+	VerifyToken sql.NullString `json:"verifyToken"`
+	IsActive    sql.NullBool   `json:"isActive"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   sql.NullTime   `json:"updatedAt"`
 }

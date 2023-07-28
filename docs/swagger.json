@@ -1,0 +1,14 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Handles pet information",
+        "title": "Pet Service",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "host": "localhost",
+    "paths": {}
+}
