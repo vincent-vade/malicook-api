@@ -11,3 +11,12 @@ services:
       - '5436:5432'
     volumes:
       - ./postgres:/var/lib/postgresql/data
+
+  maildev:
+    hostname: maildev
+    image: maildev/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    restart: always
+    ports:
+      - "1080:80"
+      - "25:25"

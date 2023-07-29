@@ -1,36 +1,36 @@
 package main
 
-import _ "github.com/joho/godotenv/autoload"
-
 import (
 	"context"
-	"github.com/go-chi/chi/v5"
-	_ "github.com/lib/pq"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/unrolled/render"
-	"log"
-	"net/http"
 	"recipes-api/config"
 	"recipes-api/domain/core"
 	"recipes-api/http/middleware"
 	"recipes-api/http/routes"
 )
 
-// @version 1.0.0
-// @title Pet Service
-// @description Handles pet information
-// @host localhost
-// @schemes http
+import (
+	"github.com/go-chi/chi/v5"
+	_ "github.com/lib/pq"
+	"log"
+	"net/http"
+)
+
 func main() {
 	ctx := context.Background()
+
 	r := render.New()
 	router := chi.NewRouter()
 	sqlc := config.NewDb()
 	cH := core.NewContextHandler(ctx, sqlc, r)
 
 	middleware.MakeMiddleware(router)
-	routes.MakeRoutes(router, cH)
 
-	addr := ":5003"
+	routes.AuthRoute(router, cH)
+	routes.MakePrivateRoutes(router, cH)
+
+	addr := ":8089"
 	log.Println("listen on", addr)
 
 	http.ListenAndServe(addr, router)

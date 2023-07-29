@@ -7,7 +7,8 @@ import (
 )
 
 type UserRepository interface {
-	Create(c context.Context, user *sqlc.User) error
+	Create(c context.Context, user sqlc.User) (uuid.UUID, error)
 	List(c context.Context) ([]sqlc.User, error)
 	GetByID(c context.Context, id uuid.UUID) (sqlc.User, error)
+	GetByEmail(c context.Context, email string) (sqlc.User, error)
 }

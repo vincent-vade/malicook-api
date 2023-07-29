@@ -8,7 +8,7 @@ import (
 	"recipes-api/infra/sqlc/repository"
 )
 
-func RecipesRoute(r *chi.Mux, cH *core.ContextHandler) {
+func RecipesRoute(r chi.Router, cH *core.ContextHandler) {
 	rr := repository.NewRecipeRepository(cH.SqlcCtx)
 	rs := recipes.NewRecipeService(rr)
 	rh := handlers.NewRecipeHandler(rs)

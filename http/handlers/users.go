@@ -28,11 +28,11 @@ func (uh *UserHandler) CreateUserHandler(ctx *core.ContextHandler) func(writer h
 			http.Error(writer, err.Error(), http.StatusBadRequest)
 		}
 
-		er := uh.userService.NewUser(ctx, u)
+		x, er := uh.userService.NewUser(ctx, &u)
 		if er != nil {
 			return
 		}
-		ctx.Render.JSON(writer, 200, map[string]interface{}{"msg": "ok"})
+		ctx.Render.JSON(writer, 200, map[string]interface{}{"msg": "ok", "id": x})
 	}
 }
 

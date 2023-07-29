@@ -6,7 +6,7 @@ import (
 	"recipes-api/http/handlers"
 )
 
-func CategoriesRoute(r *chi.Mux, cH *core.ContextHandler) {
+func CategoriesRoute(r chi.Router, cH *core.ContextHandler) {
 	r.Route("/categories", func(router chi.Router) {
 		router.Post("/", handlers.CreateCategoryHandler(cH))
 		router.Get("/", handlers.ListCategoriesHandler(cH))

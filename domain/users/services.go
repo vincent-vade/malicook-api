@@ -12,8 +12,9 @@ type UserService struct {
 }
 
 type IUserService interface {
-	NewUser(ch *core.ContextHandler, u sqlc.User) error
+	NewUser(ch *core.ContextHandler, u *sqlc.User) (uuid.UUID, error)
 	FindUser(ch *core.ContextHandler, id uuid.UUID) sqlc.User
+	FindUserByEmail(ch *core.ContextHandler, email string) sqlc.User
 	ListUsers(ch *core.ContextHandler) ([]sqlc.User, error)
 }
 
@@ -37,23 +38,26 @@ func chanPass(pass string) string {
 	return receivePass
 }
 
-func (us UserService) NewUser(ctx *core.ContextHandler, u sqlc.User) error {
+func (us UserService) NewUser(ctx *core.ContextHandler, u *sqlc.User) (uuid.UUID, error) {
 	pass := chanPass(u.Password)
-	usr := sqlc.User{
+	cUsr := sqlc.User{
 		Email:     u.Email,
 		LastName:  u.LastName,
 		FirstName: u.FirstName,
 		Password:  pass,
 	}
-	err := us.userRepository.Create(ctx.Ctx, &usr)
-	if err != nil {
-		return err
-	}
-	return err
+	x, err := us.userRepository.Create(ctx.Ctx, cUsr)
+
+	return x, err
 }
 
 func (us UserService) FindUser(ch *core.ContextHandler, id uuid.UUID) sqlc.User {
 	user, _ := us.userRepository.GetByID(ch.Ctx, id)
+	return user
+}
+
+func (us UserService) FindUserByEmail(ch *core.ContextHandler, email string) sqlc.User {
+	user, _ := us.userRepository.GetByEmail(ch.Ctx, email)
 	return user
 }
 
